@@ -6,6 +6,8 @@ import { api } from "~/utils/api";
 export default function Home() {
   const user = useUser();
 
+  const { data } = api.vehicles.getAll.useQuery();
+
   return (
     <>
       <Head>
@@ -19,6 +21,8 @@ export default function Home() {
           {!user.isSignedIn && <SignInButton />}
           {!!user.isSignedIn && <SignOutButton />}
         </div>
+        <div>{JSON.stringify(data)}</div>
+        {data && <div>{data.map((vehicle) => vehicle.model)}</div>}
       </main>
     </>
   );
