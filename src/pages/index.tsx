@@ -1,12 +1,14 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
+import Link from "next/link";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const user = useUser();
+  const userId = String(user.user?.id);
 
-  const { data } = api.vehicles.getAll.useQuery();
+  const { data } = api.vehicles.getVehiclesByUser.useQuery(userId);
 
   return (
     <>
@@ -18,11 +20,14 @@ export default function Home() {
       <main className="">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1>Sign in</h1>
-          {!user.isSignedIn && <SignInButton />}
-          {!!user.isSignedIn && <SignOutButton />}
+          {!!user.isSignedIn && <p>Hello {user.user.fullName}</p>}
+          {data && data.length === 0 && (
+            <p>
+              You don&apos;t have a vehicle.{" "}
+              <Link href="/vehicles/add">Add one</Link>
+            </p>
+          )}
         </div>
-        <div>{JSON.stringify(data)}</div>
-        {data && <div>{data.map((vehicle) => vehicle.model)}</div>}
       </main>
     </>
   );
