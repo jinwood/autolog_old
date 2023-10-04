@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <div className="flex-grow">{children}</div>
+      <div className="flex-grow p-2 md:p-8">{children}</div>
       <footer className="sticky bottom-0 bg-neutral-200 text-center dark:bg-neutral-700 lg:text-left">
         <div className="p-4 text-center text-neutral-700 dark:text-neutral-200">
           © 2023 Copyright:
