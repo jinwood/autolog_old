@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="bg-blue-500 p-4">
+      <header className="bg-slate-800 p-4">
         <div className="container mx-auto flex items-center justify-between">
           {/* Logo on the left */}
           <div className="text-2xl font-bold text-white">

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-type Vehicle = {
+export type Vehicle = {
   id: string;
   createdAt: Date;
   manufacturer: string;
