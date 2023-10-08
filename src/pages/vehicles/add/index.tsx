@@ -1,15 +1,17 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { manufacturers } from "~/types";
+import { api } from "~/utils/api";
 
 export default function Page() {
+  const mutation = api.vehicles.addVehicle.useMutation();
   const [formData, setFormData] = useState({
-    manufacturer: "",
-    model: "",
-    year: "",
-    engineSize: "",
-    registration: "",
-    colour: "",
-    fuelType: "",
+    manufacturer: "foo",
+    model: "foo",
+    year: 1990,
+    engineSize: 2000,
+    registration: "foo",
+    colour: "foo",
+    fuelType: "foo",
     ownerId: "",
   });
   const handleChange = (
@@ -22,24 +24,13 @@ export default function Page() {
     });
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    console.log(formData);
     event.preventDefault();
 
-    const body = JSON.stringify(formData);
-
-    fetch("/api/vehicles/add", {
-      method: "POST",
-      body,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        // Handle the response data as needed
-      })
-      .catch((error) => console.error(error));
+    mutation.mutate({
+      ...formData,
+    });
   };
 
   return (

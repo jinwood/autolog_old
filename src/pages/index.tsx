@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
+import Container from "~/components/container";
 
 import { api } from "~/utils/api";
 
@@ -18,16 +19,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1>Sign in</h1>
+        <Container>
           {!!user.isSignedIn && <p>Hello {user.user.fullName}</p>}
           {data && data.length === 0 && (
             <p>
               You don&apos;t have a vehicle.{" "}
-              <Link href="/vehicles/add">Add one</Link>
+              <Link href="/vehicles/add" className="text-blue-400 underline">
+                Add one
+              </Link>
             </p>
           )}
-        </div>
+        </Container>
       </main>
     </>
   );

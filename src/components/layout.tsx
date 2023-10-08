@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +8,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto flex items-center justify-between">
           {/* Logo on the left */}
           <div className="text-2xl font-bold text-white">
-            <Link href="/">Your Logo</Link>
+            <Link href="/">
+              <Image src="/logo.png" width={50} height={50} alt="Logo" />
+            </Link>
           </div>
 
           {/* Menu on the right */}
