@@ -1,4 +1,6 @@
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useState, type FormEvent, type ChangeEvent, useEffect } from "react";
+import Container from "~/components/container";
 import { manufacturers } from "~/types";
 import { api } from "~/utils/api";
 
@@ -14,6 +16,18 @@ export default function Page() {
     fuelType: "foo",
     ownerId: "",
   });
+
+  const user = useUser();
+
+  useEffect(() => {
+    if (user.user?.id) {
+      setFormData((prevData) => ({
+        ...prevData,
+        ownerId: String(user.user.id),
+      }));
+    }
+  }, [user.user?.id]);
+
   const handleChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>,
   ) => {
@@ -22,6 +36,7 @@ export default function Page() {
       ...formData,
       [name]: value,
     });
+    console.log(formData);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -30,11 +45,13 @@ export default function Page() {
 
     mutation.mutate({
       ...formData,
+      engineSize: Number(formData.engineSize),
+      year: Number(formData.year),
     });
   };
 
   return (
-    <div className=" min-h-screen items-center justify-center rounded bg-slate-800 px-8 pb-8 pt-6 text-white shadow-md">
+    <Container>
       <h2>Add a vehicle</h2>
       <form onSubmit={handleSubmit}>
         <div className="gird-cols-1 c-white-400 mb-4 grid gap-4 pt-6 md:grid-cols-3">
@@ -68,7 +85,7 @@ export default function Page() {
               type="text"
               name="model"
               id="model"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  text-gray-700 shadow focus:outline-none"
               onChange={handleChange}
               value={formData.model}
             />
@@ -81,7 +98,7 @@ export default function Page() {
               type="number"
               name="year"
               id="year"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
               onChange={handleChange}
               value={formData.year}
             />
@@ -97,7 +114,7 @@ export default function Page() {
               type="number"
               name="engineSize"
               id="engineSize"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
               onChange={handleChange}
               value={formData.engineSize}
             />
@@ -113,7 +130,7 @@ export default function Page() {
               type="text"
               name="registration"
               id="registration"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
               onChange={handleChange}
               value={formData.registration}
             />
@@ -126,7 +143,7 @@ export default function Page() {
               type="text"
               name="colour"
               id="colour"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
               onChange={handleChange}
               value={formData.colour}
             />
@@ -139,22 +156,9 @@ export default function Page() {
               type="text"
               name="fuelType"
               id="fuelType"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
               onChange={handleChange}
               value={formData.fuelType}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="ownerId" className="mb-2 block text-sm font-bold ">
-              Owner ID
-            </label>
-            <input
-              type="text"
-              name="ownerId"
-              id="ownerId"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  shadow focus:outline-none"
-              onChange={handleChange}
-              value={formData.ownerId}
             />
           </div>
           <div className="flex items-center justify-between">
@@ -167,6 +171,6 @@ export default function Page() {
           </div>
         </div>
       </form>
-    </div>
+    </Container>
   );
 }
