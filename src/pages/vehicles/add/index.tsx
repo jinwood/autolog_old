@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 export default function Page() {
   const mutation = api.vehicles.addVehicle.useMutation();
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     manufacturer: "Ford",
     model: "Focus",
@@ -69,9 +70,8 @@ export default function Page() {
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    console.log(formData);
     event.preventDefault();
-
+    setIsSubmitting(true);
     try {
       mutation.mutate({
         ...formData,
@@ -82,8 +82,10 @@ export default function Page() {
         model: String(modelInputValue),
       });
     } catch (error) {
+      setIsSubmitting(false);
       console.error(error);
     } finally {
+      setIsSubmitting(false);
       router.push("/vehicles");
     }
   };
@@ -242,9 +244,13 @@ export default function Page() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
+              className={
+                isSubmitting
+                  ? "focus:shadow-outline disabled cursor-not-allowed rounded bg-gray-500 px-4 py-2 font-bold text-white focus:outline-none"
+                  : "focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
+              }
             >
-              Submit
+              {isSubmitting ? "Please wait..." : "Add vehicle"}
             </button>
           </div>
         </div>
