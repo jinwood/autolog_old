@@ -8,6 +8,6 @@ const awsConfig = {
 
 AWS.config.update(awsConfig);
 
-const s3 = new AWS.S3();
+const S3 = new AWS.S3();
 
-export default s3;
+export default S3;
