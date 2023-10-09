@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
+import { useContext } from "react";
 import Container from "~/components/container";
 
 import { api } from "~/utils/api";

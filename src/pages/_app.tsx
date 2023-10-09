@@ -9,7 +9,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider>
       <Layout>
-        <Component {...pageProps} />
+        <Component {...pageProps} />;
       </Layout>
     </ClerkProvider>
   );

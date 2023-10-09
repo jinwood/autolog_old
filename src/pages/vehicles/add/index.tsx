@@ -66,7 +66,6 @@ export default function Page() {
       ...formData,
       [name]: value,
     });
-    console.log(formData);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
