@@ -1,23 +1,51 @@
 import { useUser } from "@clerk/nextjs";
 import { useState, type FormEvent, type ChangeEvent, useEffect } from "react";
 import Container from "~/components/container";
-import { manufacturers } from "~/types";
+import useDebouncedInput from "~/hooks/useDebouncedInput";
+import { manufacturers, fuelType } from "~/types";
 import { api } from "~/utils/api";
 
 export default function Page() {
   const mutation = api.vehicles.addVehicle.useMutation();
   const [formData, setFormData] = useState({
-    manufacturer: "foo",
-    model: "foo",
-    year: 1990,
-    engineSize: 2000,
-    registration: "foo",
-    colour: "foo",
-    fuelType: "foo",
+    manufacturer: "Ford",
+    model: "Focus",
+    year: 2016,
+    engineSize: 1500,
+    registration: "AA102DD",
+    colour: "White",
+    fuelType: "Diesel",
     ownerId: "",
   });
 
   const user = useUser();
+
+  const {
+    inputValue: modelInputValue,
+    handleInputChange: modelHandleInputChange,
+  } = useDebouncedInput(formData.model, 500);
+
+  const {
+    inputValue: registrationInputValue,
+    handleInputChange: registrationHandleInputChange,
+  } = useDebouncedInput(formData.registration);
+
+  const {
+    inputValue: colourInputValue,
+    handleInputChange: colourHandleInputChange,
+  } = useDebouncedInput(formData.colour);
+
+  const {
+    inputValue: engineSizeInputValue,
+    handleInputChange: engineSizeHandleInputChange,
+  } = useDebouncedInput(formData.engineSize);
+
+  const {
+    inputValue: yearInputValue,
+    handleInputChange: yearHandleInputChange,
+  } = useDebouncedInput(formData.year);
+
+  console.log(modelInputValue);
 
   useEffect(() => {
     if (user.user?.id) {
@@ -45,8 +73,11 @@ export default function Page() {
 
     mutation.mutate({
       ...formData,
-      engineSize: Number(formData.engineSize),
-      year: Number(formData.year),
+      engineSize: Number(engineSizeInputValue),
+      year: Number(yearInputValue),
+      registration: String(registrationInputValue),
+      colour: String(colourInputValue),
+      model: String(modelInputValue),
     });
   };
 
@@ -86,8 +117,8 @@ export default function Page() {
               name="model"
               id="model"
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight  text-gray-700 shadow focus:outline-none"
-              onChange={handleChange}
-              value={formData.model}
+              onChange={modelHandleInputChange}
+              value={modelInputValue}
             />
           </div>
           <div className="mb-4">
@@ -99,7 +130,7 @@ export default function Page() {
               name="year"
               id="year"
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
-              onChange={handleChange}
+              onChange={yearHandleInputChange}
               value={formData.year}
             />
           </div>
@@ -108,14 +139,14 @@ export default function Page() {
               htmlFor="engineSize"
               className="mb-2 block text-sm font-bold "
             >
-              Engine Size
+              Engine Size (cc)
             </label>
             <input
               type="number"
               name="engineSize"
               id="engineSize"
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
-              onChange={handleChange}
+              onChange={engineSizeHandleInputChange}
               value={formData.engineSize}
             />
           </div>
@@ -131,7 +162,7 @@ export default function Page() {
               name="registration"
               id="registration"
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
-              onChange={handleChange}
+              onChange={registrationHandleInputChange}
               value={formData.registration}
             />
           </div>
@@ -144,7 +175,7 @@ export default function Page() {
               name="colour"
               id="colour"
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
-              onChange={handleChange}
+              onChange={colourHandleInputChange}
               value={formData.colour}
             />
           </div>
@@ -152,14 +183,20 @@ export default function Page() {
             <label htmlFor="fuelType" className="mb-2 block text-sm font-bold ">
               Fuel Type
             </label>
-            <input
-              type="text"
+            <select
               name="fuelType"
               id="fuelType"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               onChange={handleChange}
               value={formData.fuelType}
-            />
+            >
+              <option value="">Select Fuel Type</option>
+              {fuelType.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center justify-between">
             <button

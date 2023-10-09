@@ -65,4 +65,16 @@ export const manufacturers = [
   "Volvo",
 ];
 
+export const fuelType = [
+  "Petrol",
+  "Diesel",
+  "Electric",
+  "Hybrid",
+  "LPG",
+  "Natural Gas",
+  "Plug-in Hybrid",
+];
+
 export type Manufacturer = (typeof manufacturers)[number];
+
+export type FuelType = (typeof fuelType)[number];
