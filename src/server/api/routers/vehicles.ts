@@ -11,6 +11,7 @@ export type Vehicle = {
   registration: string;
   colour: string;
   fuelType: string;
+  bodyType: string;
   ownerId: string;
 };
 
@@ -37,6 +38,7 @@ export const vehiclesRouter = createTRPCRouter({
         registration: z.string(),
         colour: z.string(),
         fuelType: z.string(),
+        bodyType: z.string(),
         ownerId: z.string(),
       }),
     )

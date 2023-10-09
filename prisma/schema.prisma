@@ -22,6 +22,7 @@ model Vehicle {
   registration String
   colour       String
   fuelType     String
+  bodyType     String
 
   ownerId String
 

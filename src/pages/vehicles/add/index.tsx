@@ -1,12 +1,14 @@
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
 import { useState, type FormEvent, type ChangeEvent, useEffect } from "react";
 import Container from "~/components/container";
 import useDebouncedInput from "~/hooks/useDebouncedInput";
-import { manufacturers, fuelType } from "~/types";
+import { manufacturers, fuelType, bodyType } from "~/types";
 import { api } from "~/utils/api";
 
 export default function Page() {
   const mutation = api.vehicles.addVehicle.useMutation();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     manufacturer: "Ford",
     model: "Focus",
@@ -15,6 +17,7 @@ export default function Page() {
     registration: "AA102DD",
     colour: "White",
     fuelType: "Diesel",
+    bodyType: "Estate",
     ownerId: "",
   });
 
@@ -45,8 +48,6 @@ export default function Page() {
     handleInputChange: yearHandleInputChange,
   } = useDebouncedInput(formData.year);
 
-  console.log(modelInputValue);
-
   useEffect(() => {
     if (user.user?.id) {
       setFormData((prevData) => ({
@@ -71,14 +72,20 @@ export default function Page() {
     console.log(formData);
     event.preventDefault();
 
-    mutation.mutate({
-      ...formData,
-      engineSize: Number(engineSizeInputValue),
-      year: Number(yearInputValue),
-      registration: String(registrationInputValue),
-      colour: String(colourInputValue),
-      model: String(modelInputValue),
-    });
+    try {
+      mutation.mutate({
+        ...formData,
+        engineSize: Number(engineSizeInputValue),
+        year: Number(yearInputValue),
+        registration: String(registrationInputValue),
+        colour: String(colourInputValue),
+        model: String(modelInputValue),
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      router.push("/vehicles");
+    }
   };
 
   return (
@@ -100,7 +107,12 @@ export default function Page() {
               onChange={handleChange}
               value={formData.manufacturer}
             >
-              <option value="">Select Manufacturer</option>
+              <option value="">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                  &#9660; &nbsp;
+                </div>
+                Select Manufacturer
+              </option>
               {manufacturers.map((manufacturer, index) => (
                 <option key={index} value={manufacturer}>
                   {manufacturer}
@@ -190,8 +202,37 @@ export default function Page() {
               onChange={handleChange}
               value={formData.fuelType}
             >
-              <option value="">Select Fuel Type</option>
+              <option value="">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                  &#9660; &nbsp;
+                </div>
+                Select Fuel Type
+              </option>
               {fuelType.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="bodyType" className="mb-2 block text-sm font-bold ">
+              Body Type
+            </label>
+            <select
+              name="bodyType"
+              id="bodyType"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 pr-8 leading-tight text-gray-700 shadow focus:outline-none"
+              onChange={handleChange}
+              value={formData.bodyType}
+            >
+              <option value="">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                  &#9660; &nbsp;
+                </div>
+                Select Body Type
+              </option>
+              {bodyType.map((type, index) => (
                 <option key={index} value={type}>
                   {type}
                 </option>

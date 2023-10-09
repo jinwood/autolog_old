@@ -75,6 +75,17 @@ export const fuelType = [
   "Plug-in Hybrid",
 ];
 
+export const bodyType = [
+  "Hatchback",
+  "Saloon",
+  "SUV",
+  "Coupe",
+  "Convertible",
+  "Estate",
+];
+
 export type Manufacturer = (typeof manufacturers)[number];
 
 export type FuelType = (typeof fuelType)[number];
+
+export type BodyType = (typeof bodyType)[number];
