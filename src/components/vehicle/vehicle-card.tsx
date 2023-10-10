@@ -46,7 +46,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
       <p className="text-sm text-gray-600">
         <strong>Body Type:</strong> {vehicle.bodyType}
       </p>
-      <Link href={`/vehicles/add-media/${vehicle.id}`}>
+      <Link href={`/vehicles/media/${vehicle.id}`}>
         <p className="text-sm text-blue-400 underline">Add Photo</p>
       </Link>
     </div>
