@@ -1,6 +1,7 @@
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import Link from "next/link";
 import { type Vehicle } from "~/server/api/routers/vehicles";
 
 interface VehicleCardProps {
@@ -18,11 +19,14 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
         alt="Vehicle"
         className="mb-4 h-32 w-full object-cover object-center"
       />
-      <h2 className="text-xl font-semibold text-gray-800">
-        {vehicle.id}
-        {vehicle.manufacturer} {vehicle.model}{" "}
-        <FontAwesomeIcon color="gray" icon={faPenToSquare} />
-      </h2>
+      <div className="flex items-center space-x-2">
+        <h2 className="text-xl font-semibold text-gray-800">
+          {vehicle.manufacturer} {vehicle.model}{" "}
+        </h2>
+        <Link href={`/vehicles/edit/${vehicle.id}`}>
+          <FontAwesomeIcon color="gray" icon={faPenToSquare} />
+        </Link>
+      </div>
       <p className="text-sm text-gray-600">
         <strong>Year:</strong> {vehicle.year}{" "}
       </p>
