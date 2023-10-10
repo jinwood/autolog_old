@@ -20,6 +20,7 @@ export const env = createEnv({
     AWS_REGION: z.string().min(1),
     AWS_ACCESS_KEY_ID: z.string().min(1),
     AWS_SECRET_ACCESS_KEY: z.string().min(1),
+    CLERK_SECRET_KEY: z.string().min(1),
   },
 
   /**
@@ -32,6 +33,7 @@ export const env = createEnv({
     NEXT_PUBLIC_AWS_REGION: z.string().min(1),
     NEXT_PUBLIC_AWS_ACCESS_KEY_ID: z.string().min(1),
     NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string().min(1),
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
   },
 
   /**
@@ -46,6 +48,9 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID ?? "",
     NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY:
       process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY ?? "",
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "",
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY ?? "",
 
     // I don't think this is right but whatever...
     AWS_REGION: process.env.NEXT_PUBLIC_AWS_REGION ?? "",
