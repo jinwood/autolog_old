@@ -1,16 +1,29 @@
 import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
 import Container from "~/components/container";
 import VehicleCard from "~/components/vehicle/vehicle-card";
+import { type Vehicle } from "~/server/api/routers/vehicles";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const user = useUser();
   const userId = String(user.user?.id);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const { data } = api.vehicles.getVehiclesByUser.useQuery(userId);
+  const { data, status } = api.vehicles.getVehiclesByUser.useQuery(userId);
+
+  if (data?.length && vehicles !== data) {
+    setVehicles(data as Vehicle[]);
+    setLoading(false);
+  }
+
+  if (userId && status === "success" && !data) {
+    setLoading(false);
+  }
 
   return (
     <>
@@ -20,10 +33,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="">
-        <Container>
+        <Container loading={loading}>
           {!!user.isSignedIn && <p>Hello {user.user.fullName}</p>}
 
-          {data && data.length === 0 && (
+          {vehicles && vehicles.length === 0 && (
             <p>
               You don&apos;t have a vehicle.{" "}
               <Link href="/vehicles/add" className="text-blue-400 underline">
@@ -31,10 +44,10 @@ export default function Home() {
               </Link>
             </p>
           )}
-          {data && data.length > 0 && (
+          {vehicles && vehicles.length > 0 && (
             <>
               <h3>Your vehicles</h3>
-              {data.map((vehicle) => (
+              {vehicles.map((vehicle) => (
                 <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}
             </>
