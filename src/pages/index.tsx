@@ -1,8 +1,8 @@
 import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { useContext } from "react";
 import Container from "~/components/container";
+import VehicleCard from "~/components/vehicle/vehicle-card";
 
 import { api } from "~/utils/api";
 
@@ -22,6 +22,7 @@ export default function Home() {
       <main className="">
         <Container>
           {!!user.isSignedIn && <p>Hello {user.user.fullName}</p>}
+
           {data && data.length === 0 && (
             <p>
               You don&apos;t have a vehicle.{" "}
@@ -29,6 +30,14 @@ export default function Home() {
                 Add one
               </Link>
             </p>
+          )}
+          {data && data.length > 0 && (
+            <>
+              <h3>Your vehicles</h3>
+              {data.map((vehicle) => (
+                <VehicleCard key={vehicle.id} vehicle={vehicle} />
+              ))}
+            </>
           )}
         </Container>
       </main>
