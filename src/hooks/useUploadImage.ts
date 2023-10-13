@@ -1,7 +1,10 @@
 import S3 from "awsConfig";
 import { useState } from "react";
 
-export function useImageUpload() {
+export function useImageUpload(id = "") {
+  if (!id) {
+    throw new Error("id is required");
+  }
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -26,7 +29,7 @@ export function useImageUpload() {
 
     try {
       setUploading(true);
-      await S3.upload(params).promise();
+      const result = await S3.upload(params).promise();
       setUploading(false);
       setSelectedFile(null);
       setUploadError(null);
@@ -45,3 +48,7 @@ export function useImageUpload() {
     uploadError,
   };
 }
+
+const saveUrlToDb = async (url: string) => {
+  const mutation = api.vehicles.addVehicle.useMutation();
+};
