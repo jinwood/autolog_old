@@ -25,6 +25,7 @@ model Vehicle {
   bodyType     String
 
   ownerId String
+  media   MediaItem[]
 
   @@index([ownerId])
 }
@@ -33,4 +34,8 @@ model MediaItem {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   url       String
+  vehicleId String
+  parent    Vehicle  @relation(fields: [vehicleId], references: [id])
+
+  @@index([vehicleId])
 }
