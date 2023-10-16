@@ -10,10 +10,12 @@ export function useImageUpload(id = "") {
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const handleFileChange = (file: File | null) => {
+    console.log("filechange ", file);
     setSelectedFile(file);
   };
 
   const uploadImage = async () => {
+    console.log("uploading");
     if (!selectedFile) {
       setUploadError("No file selected");
       return;
@@ -49,6 +51,4 @@ export function useImageUpload(id = "") {
   };
 }
 
-const saveUrlToDb = async (url: string) => {
-  const mutation = api.vehicles.addVehicle.useMutation();
-};
+const saveUrlToDb = async (url: string) => {};

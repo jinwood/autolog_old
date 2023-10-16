@@ -13,6 +13,10 @@ export default function AddVehicleMediaPage() {
     uploadError,
   } = useImageUpload(String(id));
 
+  const handleClick = () => {
+    uploadImage();
+  };
+
   return (
     <Container>
       <h2 className="mb-4 text-xl font-semibold">Image Upload</h2>
@@ -23,7 +27,7 @@ export default function AddVehicleMediaPage() {
       />
       <button
         className="mt-4 rounded-md bg-blue-500 p-2 text-white"
-        onClick={void uploadImage}
+        onClick={handleClick}
         disabled={uploading || !selectedFile}
       >
         {uploading ? "Uploading..." : "Upload Image"}
