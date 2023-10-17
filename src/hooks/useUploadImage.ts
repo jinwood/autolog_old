@@ -50,5 +50,3 @@ export function useImageUpload(id = "") {
     uploadError,
   };
 }
-
-const saveUrlToDb = async (url: string) => {};
