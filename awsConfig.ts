@@ -12,6 +12,6 @@ AWS.config.update(awsConfig);
 
 const S3 = new AWS.S3();
 
-console.log(S3.listBuckets());
+console.log("s2", S3);
 
 export default S3;
